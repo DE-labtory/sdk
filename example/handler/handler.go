@@ -5,6 +5,8 @@ import (
 
 	"errors"
 
+	"fmt"
+
 	"github.com/it-chain/sdk"
 	"github.com/it-chain/sdk/logger"
 	"github.com/it-chain/sdk/pb"
@@ -30,6 +32,32 @@ func (*HandlerExample) Handle(request *pb.Request, cell *sdk.Cell) (*pb.Response
 		return handleInvoke(request, cell)
 	case "query":
 		return handleQuery(request, cell)
+	case "test":
+		fmt.Println("req : " + request.Uuid)
+		if request.Uuid == "0" {
+			cell.PutData("test", []byte("0"))
+			return responseSuccess(request, []byte(string(0))), nil
+		}
+		data, err := cell.GetData("test")
+		if err != nil {
+			return responseError(request, err), err
+		}
+		if len(data) == 0 {
+			err := errors.New("no data err")
+			return responseError(request, err), err
+		}
+		strData := string(data)
+		intData, err := strconv.Atoi(strData)
+		if err != nil {
+			return responseError(request, err), err
+		}
+		intData = intData + 1
+		changeData := strconv.Itoa(intData)
+		err = cell.PutData("test", []byte(changeData))
+		if err != nil {
+			return responseError(request, err), err
+		}
+		return responseSuccess(request, []byte(changeData)), nil
 	default:
 		logger.Fatal(nil, "unknown request type")
 		err := errors.New("unknown request type")
