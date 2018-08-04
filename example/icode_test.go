@@ -49,6 +49,7 @@ func TestICode(t *testing.T) {
 			panic("error in listen server" + err.Error())
 		}
 	}()
+	time.Sleep(3 * time.Second)
 	start := time.Now()
 	stream, _ := DialMockClient("127.0.0.1:5000", func(response *pb.Response, e error) {
 		if e != nil {
@@ -57,13 +58,13 @@ func TestICode(t *testing.T) {
 		if response.Data != nil {
 			fmt.Println("id : " + response.Uuid + ",res : " + string(response.Data))
 		}
-		if response.Uuid == "199" {
+		if response.Uuid == "9999" {
 			end := time.Now()
 			assert.WithinDuration(t, end, start, 2*time.Second)
 			wg.Done()
 		}
 	})
-	for i := 0; i < 200; i++ {
+	for i := 0; i < 10000; i++ {
 		stream.clientStream.Send(&pb.Request{
 			Uuid:         strconv.Itoa(i),
 			Type:         "test",
