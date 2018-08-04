@@ -37,7 +37,7 @@ type Server struct {
 
 func NewServer(port int) *Server {
 	addr := net.TCPAddr{
-		IP:   net.IPv4(127, 0, 0, 1),
+		IP:   net.IPv4(0, 0, 0, 0),
 		Port: port,
 		Zone: "",
 	}
