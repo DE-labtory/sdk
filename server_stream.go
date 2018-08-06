@@ -32,7 +32,7 @@ type Server struct {
 	addr       net.TCPAddr
 	ctx        context.Context
 	cancel     context.CancelFunc
-	handler    func(request *pb.Request) (*pb.Response, error)
+	handler    func(request *pb.Request) *pb.Response
 }
 
 func NewServer(port int) *Server {
@@ -48,7 +48,7 @@ func NewServer(port int) *Server {
 		cancel: cf,
 	}
 }
-func (s *Server) SetHandler(handler func(request *pb.Request) (*pb.Response, error)) {
+func (s *Server) SetHandler(handler func(request *pb.Request) *pb.Response) {
 	s.handler = handler
 }
 
@@ -83,14 +83,9 @@ func (s *Server) RunICode(streamServer pb.BistreamService_RunICodeServer) error 
 		if err != nil {
 			return err
 		}
-		res, err := s.handler(req)
-		if err != nil {
-			return err
-		}
+
+		res := s.handler(req)
 		streamServer.Send(res)
-		if err != nil {
-			return err
-		}
 	}
 }
 

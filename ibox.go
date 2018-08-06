@@ -48,7 +48,7 @@ func (i *IBox) On(timeout int) error {
 	server := NewServer(i.port)
 	cell := NewCell(i.handler.Name())
 
-	serverHandler := func(request *pb.Request) (*pb.Response, error) {
+	serverHandler := func(request *pb.Request) *pb.Response {
 		return i.handler.Handle(request, cell)
 	}
 	server.SetHandler(serverHandler)

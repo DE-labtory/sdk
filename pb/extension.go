@@ -12,15 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package sdk
+package pb
 
-import "github.com/it-chain/sdk/pb"
-
-type TransactionHandler interface {
-	Name() string
-	Versions() []string
-	Handle(request *pb.Request, cell *Cell) *pb.Response
+func (m *Response) IsSuccess() bool {
+	if m.Error == "" {
+		return true
+	}
+	return false
 }
