@@ -27,3 +27,6 @@ bnaries for programs and plugins
 
 # log output
 *.log
+
+# wsdb
+wsdb
