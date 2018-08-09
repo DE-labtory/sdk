@@ -24,6 +24,8 @@ import (
 
 	"fmt"
 
+	"encoding/json"
+
 	"github.com/it-chain/sdk"
 	"github.com/it-chain/sdk/logger"
 	"github.com/it-chain/sdk/pb"
@@ -88,7 +90,15 @@ func handleQuery(request *pb.Request, cell *sdk.Cell) (*pb.Response, error) {
 		if err != nil {
 			return responseError(request, err), err
 		}
-		return responseSuccess(request, b), nil
+
+		responseMap := make(map[string]string)
+		responseMap["A"] = string(b)
+
+		returnData, err := json.Marshal(responseMap)
+		if err != nil {
+			return responseError(request, err), err
+		}
+		return responseSuccess(request, returnData), nil
 
 	default:
 		err := errors.New("unknown query method")
