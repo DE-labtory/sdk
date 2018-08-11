@@ -40,7 +40,7 @@ sample icode : https://github.com/junbeomlee/learn-icode
  sdk-go handler is like below
 
 ```go
-type TransactionHandler interface {
+type RequestHandler interface {
 	Name() string
 	Versions() []string
 	Handle(request *pb.Request, cell *Cell) *pb.Response

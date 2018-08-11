@@ -26,7 +26,7 @@ import (
 
 type IBox struct {
 	port    int
-	handler TransactionHandler
+	handler RequestHandler
 }
 
 func NewIBox(port int) *IBox {
@@ -36,7 +36,7 @@ func NewIBox(port int) *IBox {
 	}
 }
 
-func (i *IBox) SetHandler(handler TransactionHandler) {
+func (i *IBox) SetHandler(handler RequestHandler) {
 	i.handler = handler
 }
 

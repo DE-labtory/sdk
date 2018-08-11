@@ -19,7 +19,7 @@ package sdk
 
 import "github.com/it-chain/sdk/pb"
 
-type TransactionHandler interface {
+type RequestHandler interface {
 	Name() string
 	Versions() []string
 	Handle(request *pb.Request, cell *Cell) *pb.Response
