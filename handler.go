@@ -20,7 +20,18 @@ package sdk
 import "github.com/it-chain/sdk/pb"
 
 type RequestHandler interface {
+	// this function returns icode name
 	Name() string
+	// this function returns icode versions that can be handled
 	Versions() []string
-	Handle(request *pb.Request, cell *Cell) *pb.Response
+	// this function returns icode names that can read icode data.
+	// for example, let your icode name is A. if ReaderList() return {"B"}, then
+	// icode name B can access A icode data for read permission
+	ReaderList() []string
+	// this function returns icode names that can write icode data.
+	// for example, let your icode name is A. if ReaderList() return {"B"}, then
+	// icode name B can access A icode data for write permission
+	WriterList() []string
+	// this function handle request and return response.
+	Handle(request *pb.RunICodeRequest, cell *Cell) *pb.RunICodeResponse
 }

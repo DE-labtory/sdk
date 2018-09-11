@@ -23,16 +23,21 @@ import (
 	"net"
 	"time"
 
+	"errors"
+
+	"github.com/it-chain/sdk/logger"
 	"github.com/it-chain/sdk/pb"
 	"google.golang.org/grpc"
 )
 
 type Server struct {
-	grpcServer *grpc.Server
-	addr       net.TCPAddr
-	ctx        context.Context
-	cancel     context.CancelFunc
-	handler    func(request *pb.Request) *pb.Response
+	grpcServer   *grpc.Server
+	stream       pb.BistreamService_MessageChannelServer
+	addr         net.TCPAddr
+	ctx          context.Context
+	cancel       context.CancelFunc
+	handler      func(request *pb.RunICodeRequest) *pb.RunICodeResponse
+	stateHandler func(message *pb.Message)
 }
 
 func NewServer(port int) *Server {
@@ -48,8 +53,11 @@ func NewServer(port int) *Server {
 		cancel: cf,
 	}
 }
-func (s *Server) SetHandler(handler func(request *pb.Request) *pb.Response) {
+func (s *Server) SetIcodeHandler(handler func(request *pb.RunICodeRequest) *pb.RunICodeResponse) {
 	s.handler = handler
+}
+func (s *Server) SetStateHandler(handler func(message *pb.Message)) {
+	s.stateHandler = handler
 }
 
 func (s *Server) Listen(waitTimeOutSec int) error {
@@ -66,7 +74,8 @@ func (s *Server) Listen(waitTimeOutSec int) error {
 	return s.grpcServer.Serve(l)
 }
 
-func (s *Server) RunICode(streamServer pb.BistreamService_RunICodeServer) error {
+func (s *Server) MessageChannel(streamServer pb.BistreamService_MessageChannelServer) error {
+	s.stream = streamServer
 	for {
 		select {
 		case <-s.ctx.Done():
@@ -83,9 +92,22 @@ func (s *Server) RunICode(streamServer pb.BistreamService_RunICodeServer) error 
 		if err != nil {
 			return err
 		}
-
-		res := s.handler(req)
-		streamServer.Send(res)
+		switch x := req.Message.(type) {
+		case *pb.Message_RunIcodeRequest:
+			res := s.handler(x.RunIcodeRequest)
+			streamServer.Send(&pb.Message{
+				Message: &pb.Message_RunIcodeResponse{
+					RunIcodeResponse: res,
+				},
+			})
+		case *pb.Message_ReadStateResponse:
+			s.stateHandler(req)
+		case *pb.Message_WriteStateResponse:
+			s.stateHandler(req)
+		case nil:
+			logger.Error(nil, "empty error")
+			return errors.New("empty error")
+		}
 	}
 }
 

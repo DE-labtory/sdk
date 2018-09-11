@@ -46,11 +46,11 @@ func (i *IBox) On(timeout int) error {
 		os.Exit(1)
 	}
 	server := NewServer(i.port)
-	cell := NewCell(i.handler.Name())
+	cell := NewCell(server, i.handler.Name())
 
-	serverHandler := func(request *pb.Request) *pb.Response {
+	serverHandler := func(request *pb.RunICodeRequest) *pb.RunICodeResponse {
 		return i.handler.Handle(request, cell)
 	}
-	server.SetHandler(serverHandler)
+	server.SetIcodeHandler(serverHandler)
 	return server.Listen(timeout)
 }

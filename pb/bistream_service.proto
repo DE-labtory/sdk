@@ -1,23 +1,70 @@
 syntax = "proto3";
 package pb;
 
-service BistreamService{
-    rpc RunICode (stream Request) returns (stream Response){}
+service BistreamService {
+    rpc MessageChannel (stream Message) returns (stream Message) {}
     rpc Ping (Empty) returns (Empty) {}
 }
+message Message {
+    oneof Message {
+        RunICodeRequest runIcodeRequest = 1;
+        RunICodeResponse runIcodeResponse = 2;
+        ReadRequest readStateRequest = 3;
+        ReadResponse readStateResponse = 4;
+        WriteRequest writeStateRequest = 5;
+        WriteResponse writeStateResponse = 6;
+    }
+}
 
-message Request {
+message RunICodeRequest {
     string uuid = 1;
     string Type = 2;
     string FunctionName = 3;
     repeated string Args = 4;
 }
 
-message Response {
+message RunICodeResponse {
     string uuid = 1;
     string Type = 2;
     bytes Data = 3;
     string Error = 4;
+}
+
+message ReadRequest {
+    string uuid = 1;
+    string icodeName = 2;
+    string key = 3;
+}
+
+message ReadResponse {
+    enum errorType {
+        NONE = 0;
+        NO_PERMISSION = 1;
+        UNKNOWN = 2;
+    }
+    string uuid = 1;
+    string key = 2;
+    string value = 3;
+    errorType error = 4;
+}
+
+message WriteRequest {
+    string uuid = 1;
+    string icodeName = 2;
+    string key = 3;
+    string value = 4;
+}
+
+message WriteResponse {
+    enum errorType {
+        NONE = 0;
+        NO_PERMISSION = 1;
+        UNKNOWN = 2;
+    }
+    string uuid = 1;
+    string key = 2;
+    string value = 3;
+    errorType error = 4;
 }
 
 message Empty {

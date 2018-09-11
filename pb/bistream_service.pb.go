@@ -23,7 +23,336 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type Request struct {
+type ReadResponseErrorType int32
+
+const (
+	ReadResponse_NONE          ReadResponseErrorType = 0
+	ReadResponse_NO_PERMISSION ReadResponseErrorType = 1
+	ReadResponse_UNKNOWN       ReadResponseErrorType = 2
+)
+
+var ReadResponseErrorType_name = map[int32]string{
+	0: "NONE",
+	1: "NO_PERMISSION",
+	2: "UNKNOWN",
+}
+var ReadResponseErrorType_value = map[string]int32{
+	"NONE":          0,
+	"NO_PERMISSION": 1,
+	"UNKNOWN":       2,
+}
+
+func (x ReadResponseErrorType) String() string {
+	return proto.EnumName(ReadResponseErrorType_name, int32(x))
+}
+func (ReadResponseErrorType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{4, 0}
+}
+
+type WriteResponseErrorType int32
+
+const (
+	WriteResponse_NONE          WriteResponseErrorType = 0
+	WriteResponse_NO_PERMISSION WriteResponseErrorType = 1
+	WriteResponse_UNKNOWN       WriteResponseErrorType = 2
+)
+
+var WriteResponseErrorType_name = map[int32]string{
+	0: "NONE",
+	1: "NO_PERMISSION",
+	2: "UNKNOWN",
+}
+var WriteResponseErrorType_value = map[string]int32{
+	"NONE":          0,
+	"NO_PERMISSION": 1,
+	"UNKNOWN":       2,
+}
+
+func (x WriteResponseErrorType) String() string {
+	return proto.EnumName(WriteResponseErrorType_name, int32(x))
+}
+func (WriteResponseErrorType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{6, 0}
+}
+
+type Message struct {
+	// Types that are valid to be assigned to Message:
+	//	*Message_RunIcodeRequest
+	//	*Message_RunIcodeResponse
+	//	*Message_ReadStateRequest
+	//	*Message_ReadStateResponse
+	//	*Message_WriteStateRequest
+	//	*Message_WriteStateResponse
+	Message              isMessage_Message `protobuf_oneof:"Message"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
+}
+
+func (m *Message) Reset()         { *m = Message{} }
+func (m *Message) String() string { return proto.CompactTextString(m) }
+func (*Message) ProtoMessage()    {}
+func (*Message) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{0}
+}
+func (m *Message) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Message.Unmarshal(m, b)
+}
+func (m *Message) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Message.Marshal(b, m, deterministic)
+}
+func (dst *Message) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Message.Merge(dst, src)
+}
+func (m *Message) XXX_Size() int {
+	return xxx_messageInfo_Message.Size(m)
+}
+func (m *Message) XXX_DiscardUnknown() {
+	xxx_messageInfo_Message.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Message proto.InternalMessageInfo
+
+type isMessage_Message interface {
+	isMessage_Message()
+}
+
+type Message_RunIcodeRequest struct {
+	RunIcodeRequest *RunICodeRequest `protobuf:"bytes,1,opt,name=runIcodeRequest,proto3,oneof"`
+}
+
+type Message_RunIcodeResponse struct {
+	RunIcodeResponse *RunICodeResponse `protobuf:"bytes,2,opt,name=runIcodeResponse,proto3,oneof"`
+}
+
+type Message_ReadStateRequest struct {
+	ReadStateRequest *ReadRequest `protobuf:"bytes,3,opt,name=readStateRequest,proto3,oneof"`
+}
+
+type Message_ReadStateResponse struct {
+	ReadStateResponse *ReadResponse `protobuf:"bytes,4,opt,name=readStateResponse,proto3,oneof"`
+}
+
+type Message_WriteStateRequest struct {
+	WriteStateRequest *WriteRequest `protobuf:"bytes,5,opt,name=writeStateRequest,proto3,oneof"`
+}
+
+type Message_WriteStateResponse struct {
+	WriteStateResponse *WriteResponse `protobuf:"bytes,6,opt,name=writeStateResponse,proto3,oneof"`
+}
+
+func (*Message_RunIcodeRequest) isMessage_Message() {}
+
+func (*Message_RunIcodeResponse) isMessage_Message() {}
+
+func (*Message_ReadStateRequest) isMessage_Message() {}
+
+func (*Message_ReadStateResponse) isMessage_Message() {}
+
+func (*Message_WriteStateRequest) isMessage_Message() {}
+
+func (*Message_WriteStateResponse) isMessage_Message() {}
+
+func (m *Message) GetMessage() isMessage_Message {
+	if m != nil {
+		return m.Message
+	}
+	return nil
+}
+
+func (m *Message) GetRunIcodeRequest() *RunICodeRequest {
+	if x, ok := m.GetMessage().(*Message_RunIcodeRequest); ok {
+		return x.RunIcodeRequest
+	}
+	return nil
+}
+
+func (m *Message) GetRunIcodeResponse() *RunICodeResponse {
+	if x, ok := m.GetMessage().(*Message_RunIcodeResponse); ok {
+		return x.RunIcodeResponse
+	}
+	return nil
+}
+
+func (m *Message) GetReadStateRequest() *ReadRequest {
+	if x, ok := m.GetMessage().(*Message_ReadStateRequest); ok {
+		return x.ReadStateRequest
+	}
+	return nil
+}
+
+func (m *Message) GetReadStateResponse() *ReadResponse {
+	if x, ok := m.GetMessage().(*Message_ReadStateResponse); ok {
+		return x.ReadStateResponse
+	}
+	return nil
+}
+
+func (m *Message) GetWriteStateRequest() *WriteRequest {
+	if x, ok := m.GetMessage().(*Message_WriteStateRequest); ok {
+		return x.WriteStateRequest
+	}
+	return nil
+}
+
+func (m *Message) GetWriteStateResponse() *WriteResponse {
+	if x, ok := m.GetMessage().(*Message_WriteStateResponse); ok {
+		return x.WriteStateResponse
+	}
+	return nil
+}
+
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*Message) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _Message_OneofMarshaler, _Message_OneofUnmarshaler, _Message_OneofSizer, []interface{}{
+		(*Message_RunIcodeRequest)(nil),
+		(*Message_RunIcodeResponse)(nil),
+		(*Message_ReadStateRequest)(nil),
+		(*Message_ReadStateResponse)(nil),
+		(*Message_WriteStateRequest)(nil),
+		(*Message_WriteStateResponse)(nil),
+	}
+}
+
+func _Message_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*Message)
+	// Message
+	switch x := m.Message.(type) {
+	case *Message_RunIcodeRequest:
+		b.EncodeVarint(1<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.RunIcodeRequest); err != nil {
+			return err
+		}
+	case *Message_RunIcodeResponse:
+		b.EncodeVarint(2<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.RunIcodeResponse); err != nil {
+			return err
+		}
+	case *Message_ReadStateRequest:
+		b.EncodeVarint(3<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.ReadStateRequest); err != nil {
+			return err
+		}
+	case *Message_ReadStateResponse:
+		b.EncodeVarint(4<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.ReadStateResponse); err != nil {
+			return err
+		}
+	case *Message_WriteStateRequest:
+		b.EncodeVarint(5<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.WriteStateRequest); err != nil {
+			return err
+		}
+	case *Message_WriteStateResponse:
+		b.EncodeVarint(6<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.WriteStateResponse); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("Message.Message has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _Message_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*Message)
+	switch tag {
+	case 1: // Message.runIcodeRequest
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(RunICodeRequest)
+		err := b.DecodeMessage(msg)
+		m.Message = &Message_RunIcodeRequest{msg}
+		return true, err
+	case 2: // Message.runIcodeResponse
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(RunICodeResponse)
+		err := b.DecodeMessage(msg)
+		m.Message = &Message_RunIcodeResponse{msg}
+		return true, err
+	case 3: // Message.readStateRequest
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ReadRequest)
+		err := b.DecodeMessage(msg)
+		m.Message = &Message_ReadStateRequest{msg}
+		return true, err
+	case 4: // Message.readStateResponse
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ReadResponse)
+		err := b.DecodeMessage(msg)
+		m.Message = &Message_ReadStateResponse{msg}
+		return true, err
+	case 5: // Message.writeStateRequest
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(WriteRequest)
+		err := b.DecodeMessage(msg)
+		m.Message = &Message_WriteStateRequest{msg}
+		return true, err
+	case 6: // Message.writeStateResponse
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(WriteResponse)
+		err := b.DecodeMessage(msg)
+		m.Message = &Message_WriteStateResponse{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _Message_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*Message)
+	// Message
+	switch x := m.Message.(type) {
+	case *Message_RunIcodeRequest:
+		s := proto.Size(x.RunIcodeRequest)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *Message_RunIcodeResponse:
+		s := proto.Size(x.RunIcodeResponse)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *Message_ReadStateRequest:
+		s := proto.Size(x.ReadStateRequest)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *Message_ReadStateResponse:
+		s := proto.Size(x.ReadStateResponse)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *Message_WriteStateRequest:
+		s := proto.Size(x.WriteStateRequest)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *Message_WriteStateResponse:
+		s := proto.Size(x.WriteStateResponse)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
+}
+
+type RunICodeRequest struct {
 	Uuid                 string   `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	Type                 string   `protobuf:"bytes,2,opt,name=Type,proto3" json:"Type,omitempty"`
 	FunctionName         string   `protobuf:"bytes,3,opt,name=FunctionName,proto3" json:"FunctionName,omitempty"`
@@ -33,59 +362,59 @@ type Request struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Request) Reset()         { *m = Request{} }
-func (m *Request) String() string { return proto.CompactTextString(m) }
-func (*Request) ProtoMessage()    {}
-func (*Request) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bistream_service_806bd77e021c3465, []int{0}
+func (m *RunICodeRequest) Reset()         { *m = RunICodeRequest{} }
+func (m *RunICodeRequest) String() string { return proto.CompactTextString(m) }
+func (*RunICodeRequest) ProtoMessage()    {}
+func (*RunICodeRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{1}
 }
-func (m *Request) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Request.Unmarshal(m, b)
+func (m *RunICodeRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RunICodeRequest.Unmarshal(m, b)
 }
-func (m *Request) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Request.Marshal(b, m, deterministic)
+func (m *RunICodeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RunICodeRequest.Marshal(b, m, deterministic)
 }
-func (dst *Request) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Request.Merge(dst, src)
+func (dst *RunICodeRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RunICodeRequest.Merge(dst, src)
 }
-func (m *Request) XXX_Size() int {
-	return xxx_messageInfo_Request.Size(m)
+func (m *RunICodeRequest) XXX_Size() int {
+	return xxx_messageInfo_RunICodeRequest.Size(m)
 }
-func (m *Request) XXX_DiscardUnknown() {
-	xxx_messageInfo_Request.DiscardUnknown(m)
+func (m *RunICodeRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RunICodeRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Request proto.InternalMessageInfo
+var xxx_messageInfo_RunICodeRequest proto.InternalMessageInfo
 
-func (m *Request) GetUuid() string {
+func (m *RunICodeRequest) GetUuid() string {
 	if m != nil {
 		return m.Uuid
 	}
 	return ""
 }
 
-func (m *Request) GetType() string {
+func (m *RunICodeRequest) GetType() string {
 	if m != nil {
 		return m.Type
 	}
 	return ""
 }
 
-func (m *Request) GetFunctionName() string {
+func (m *RunICodeRequest) GetFunctionName() string {
 	if m != nil {
 		return m.FunctionName
 	}
 	return ""
 }
 
-func (m *Request) GetArgs() []string {
+func (m *RunICodeRequest) GetArgs() []string {
 	if m != nil {
 		return m.Args
 	}
 	return nil
 }
 
-type Response struct {
+type RunICodeResponse struct {
 	Uuid                 string   `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	Type                 string   `protobuf:"bytes,2,opt,name=Type,proto3" json:"Type,omitempty"`
 	Data                 []byte   `protobuf:"bytes,3,opt,name=Data,proto3" json:"Data,omitempty"`
@@ -95,56 +424,296 @@ type Response struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Response) Reset()         { *m = Response{} }
-func (m *Response) String() string { return proto.CompactTextString(m) }
-func (*Response) ProtoMessage()    {}
-func (*Response) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bistream_service_806bd77e021c3465, []int{1}
+func (m *RunICodeResponse) Reset()         { *m = RunICodeResponse{} }
+func (m *RunICodeResponse) String() string { return proto.CompactTextString(m) }
+func (*RunICodeResponse) ProtoMessage()    {}
+func (*RunICodeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{2}
 }
-func (m *Response) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Response.Unmarshal(m, b)
+func (m *RunICodeResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RunICodeResponse.Unmarshal(m, b)
 }
-func (m *Response) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Response.Marshal(b, m, deterministic)
+func (m *RunICodeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RunICodeResponse.Marshal(b, m, deterministic)
 }
-func (dst *Response) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Response.Merge(dst, src)
+func (dst *RunICodeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RunICodeResponse.Merge(dst, src)
 }
-func (m *Response) XXX_Size() int {
-	return xxx_messageInfo_Response.Size(m)
+func (m *RunICodeResponse) XXX_Size() int {
+	return xxx_messageInfo_RunICodeResponse.Size(m)
 }
-func (m *Response) XXX_DiscardUnknown() {
-	xxx_messageInfo_Response.DiscardUnknown(m)
+func (m *RunICodeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_RunICodeResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Response proto.InternalMessageInfo
+var xxx_messageInfo_RunICodeResponse proto.InternalMessageInfo
 
-func (m *Response) GetUuid() string {
+func (m *RunICodeResponse) GetUuid() string {
 	if m != nil {
 		return m.Uuid
 	}
 	return ""
 }
 
-func (m *Response) GetType() string {
+func (m *RunICodeResponse) GetType() string {
 	if m != nil {
 		return m.Type
 	}
 	return ""
 }
 
-func (m *Response) GetData() []byte {
+func (m *RunICodeResponse) GetData() []byte {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
-func (m *Response) GetError() string {
+func (m *RunICodeResponse) GetError() string {
 	if m != nil {
 		return m.Error
 	}
 	return ""
+}
+
+type ReadRequest struct {
+	Uuid                 string   `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	IcodeName            string   `protobuf:"bytes,2,opt,name=icodeName,proto3" json:"icodeName,omitempty"`
+	Key                  string   `protobuf:"bytes,3,opt,name=key,proto3" json:"key,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ReadRequest) Reset()         { *m = ReadRequest{} }
+func (m *ReadRequest) String() string { return proto.CompactTextString(m) }
+func (*ReadRequest) ProtoMessage()    {}
+func (*ReadRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{3}
+}
+func (m *ReadRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadRequest.Unmarshal(m, b)
+}
+func (m *ReadRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadRequest.Marshal(b, m, deterministic)
+}
+func (dst *ReadRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadRequest.Merge(dst, src)
+}
+func (m *ReadRequest) XXX_Size() int {
+	return xxx_messageInfo_ReadRequest.Size(m)
+}
+func (m *ReadRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ReadRequest proto.InternalMessageInfo
+
+func (m *ReadRequest) GetUuid() string {
+	if m != nil {
+		return m.Uuid
+	}
+	return ""
+}
+
+func (m *ReadRequest) GetIcodeName() string {
+	if m != nil {
+		return m.IcodeName
+	}
+	return ""
+}
+
+func (m *ReadRequest) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+type ReadResponse struct {
+	Uuid                 string                `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Key                  string                `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+	Value                string                `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
+	Error                ReadResponseErrorType `protobuf:"varint,4,opt,name=error,proto3,enum=pb.ReadResponseErrorType" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
+}
+
+func (m *ReadResponse) Reset()         { *m = ReadResponse{} }
+func (m *ReadResponse) String() string { return proto.CompactTextString(m) }
+func (*ReadResponse) ProtoMessage()    {}
+func (*ReadResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{4}
+}
+func (m *ReadResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadResponse.Unmarshal(m, b)
+}
+func (m *ReadResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadResponse.Marshal(b, m, deterministic)
+}
+func (dst *ReadResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadResponse.Merge(dst, src)
+}
+func (m *ReadResponse) XXX_Size() int {
+	return xxx_messageInfo_ReadResponse.Size(m)
+}
+func (m *ReadResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ReadResponse proto.InternalMessageInfo
+
+func (m *ReadResponse) GetUuid() string {
+	if m != nil {
+		return m.Uuid
+	}
+	return ""
+}
+
+func (m *ReadResponse) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+func (m *ReadResponse) GetValue() string {
+	if m != nil {
+		return m.Value
+	}
+	return ""
+}
+
+func (m *ReadResponse) GetError() ReadResponseErrorType {
+	if m != nil {
+		return m.Error
+	}
+	return ReadResponse_NONE
+}
+
+type WriteRequest struct {
+	Uuid                 string   `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	IcodeName            string   `protobuf:"bytes,2,opt,name=icodeName,proto3" json:"icodeName,omitempty"`
+	Key                  string   `protobuf:"bytes,3,opt,name=key,proto3" json:"key,omitempty"`
+	Value                string   `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *WriteRequest) Reset()         { *m = WriteRequest{} }
+func (m *WriteRequest) String() string { return proto.CompactTextString(m) }
+func (*WriteRequest) ProtoMessage()    {}
+func (*WriteRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{5}
+}
+func (m *WriteRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_WriteRequest.Unmarshal(m, b)
+}
+func (m *WriteRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_WriteRequest.Marshal(b, m, deterministic)
+}
+func (dst *WriteRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_WriteRequest.Merge(dst, src)
+}
+func (m *WriteRequest) XXX_Size() int {
+	return xxx_messageInfo_WriteRequest.Size(m)
+}
+func (m *WriteRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_WriteRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_WriteRequest proto.InternalMessageInfo
+
+func (m *WriteRequest) GetUuid() string {
+	if m != nil {
+		return m.Uuid
+	}
+	return ""
+}
+
+func (m *WriteRequest) GetIcodeName() string {
+	if m != nil {
+		return m.IcodeName
+	}
+	return ""
+}
+
+func (m *WriteRequest) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+func (m *WriteRequest) GetValue() string {
+	if m != nil {
+		return m.Value
+	}
+	return ""
+}
+
+type WriteResponse struct {
+	Uuid                 string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Key                  string                 `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+	Value                string                 `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
+	Error                WriteResponseErrorType `protobuf:"varint,4,opt,name=error,proto3,enum=pb.WriteResponseErrorType" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
+	XXX_unrecognized     []byte                 `json:"-"`
+	XXX_sizecache        int32                  `json:"-"`
+}
+
+func (m *WriteResponse) Reset()         { *m = WriteResponse{} }
+func (m *WriteResponse) String() string { return proto.CompactTextString(m) }
+func (*WriteResponse) ProtoMessage()    {}
+func (*WriteResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{6}
+}
+func (m *WriteResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_WriteResponse.Unmarshal(m, b)
+}
+func (m *WriteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_WriteResponse.Marshal(b, m, deterministic)
+}
+func (dst *WriteResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_WriteResponse.Merge(dst, src)
+}
+func (m *WriteResponse) XXX_Size() int {
+	return xxx_messageInfo_WriteResponse.Size(m)
+}
+func (m *WriteResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_WriteResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_WriteResponse proto.InternalMessageInfo
+
+func (m *WriteResponse) GetUuid() string {
+	if m != nil {
+		return m.Uuid
+	}
+	return ""
+}
+
+func (m *WriteResponse) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+func (m *WriteResponse) GetValue() string {
+	if m != nil {
+		return m.Value
+	}
+	return ""
+}
+
+func (m *WriteResponse) GetError() WriteResponseErrorType {
+	if m != nil {
+		return m.Error
+	}
+	return WriteResponse_NONE
 }
 
 type Empty struct {
@@ -157,7 +726,7 @@ func (m *Empty) Reset()         { *m = Empty{} }
 func (m *Empty) String() string { return proto.CompactTextString(m) }
 func (*Empty) ProtoMessage()    {}
 func (*Empty) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bistream_service_806bd77e021c3465, []int{2}
+	return fileDescriptor_bistream_service_a63e5805404e680a, []int{7}
 }
 func (m *Empty) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Empty.Unmarshal(m, b)
@@ -178,9 +747,16 @@ func (m *Empty) XXX_DiscardUnknown() {
 var xxx_messageInfo_Empty proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*Request)(nil), "pb.Request")
-	proto.RegisterType((*Response)(nil), "pb.Response")
+	proto.RegisterType((*Message)(nil), "pb.Message")
+	proto.RegisterType((*RunICodeRequest)(nil), "pb.RunICodeRequest")
+	proto.RegisterType((*RunICodeResponse)(nil), "pb.RunICodeResponse")
+	proto.RegisterType((*ReadRequest)(nil), "pb.ReadRequest")
+	proto.RegisterType((*ReadResponse)(nil), "pb.ReadResponse")
+	proto.RegisterType((*WriteRequest)(nil), "pb.WriteRequest")
+	proto.RegisterType((*WriteResponse)(nil), "pb.WriteResponse")
 	proto.RegisterType((*Empty)(nil), "pb.Empty")
+	proto.RegisterEnum("pb.ReadResponseErrorType", ReadResponseErrorType_name, ReadResponseErrorType_value)
+	proto.RegisterEnum("pb.WriteResponseErrorType", WriteResponseErrorType_name, WriteResponseErrorType_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -195,7 +771,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type BistreamServiceClient interface {
-	RunICode(ctx context.Context, opts ...grpc.CallOption) (BistreamService_RunICodeClient, error)
+	MessageChannel(ctx context.Context, opts ...grpc.CallOption) (BistreamService_MessageChannelClient, error)
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 }
 
@@ -207,31 +783,31 @@ func NewBistreamServiceClient(cc *grpc.ClientConn) BistreamServiceClient {
 	return &bistreamServiceClient{cc}
 }
 
-func (c *bistreamServiceClient) RunICode(ctx context.Context, opts ...grpc.CallOption) (BistreamService_RunICodeClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_BistreamService_serviceDesc.Streams[0], "/pb.BistreamService/RunICode", opts...)
+func (c *bistreamServiceClient) MessageChannel(ctx context.Context, opts ...grpc.CallOption) (BistreamService_MessageChannelClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_BistreamService_serviceDesc.Streams[0], "/pb.BistreamService/MessageChannel", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &bistreamServiceRunICodeClient{stream}
+	x := &bistreamServiceMessageChannelClient{stream}
 	return x, nil
 }
 
-type BistreamService_RunICodeClient interface {
-	Send(*Request) error
-	Recv() (*Response, error)
+type BistreamService_MessageChannelClient interface {
+	Send(*Message) error
+	Recv() (*Message, error)
 	grpc.ClientStream
 }
 
-type bistreamServiceRunICodeClient struct {
+type bistreamServiceMessageChannelClient struct {
 	grpc.ClientStream
 }
 
-func (x *bistreamServiceRunICodeClient) Send(m *Request) error {
+func (x *bistreamServiceMessageChannelClient) Send(m *Message) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *bistreamServiceRunICodeClient) Recv() (*Response, error) {
-	m := new(Response)
+func (x *bistreamServiceMessageChannelClient) Recv() (*Message, error) {
+	m := new(Message)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -249,7 +825,7 @@ func (c *bistreamServiceClient) Ping(ctx context.Context, in *Empty, opts ...grp
 
 // BistreamServiceServer is the server API for BistreamService service.
 type BistreamServiceServer interface {
-	RunICode(BistreamService_RunICodeServer) error
+	MessageChannel(BistreamService_MessageChannelServer) error
 	Ping(context.Context, *Empty) (*Empty, error)
 }
 
@@ -257,26 +833,26 @@ func RegisterBistreamServiceServer(s *grpc.Server, srv BistreamServiceServer) {
 	s.RegisterService(&_BistreamService_serviceDesc, srv)
 }
 
-func _BistreamService_RunICode_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(BistreamServiceServer).RunICode(&bistreamServiceRunICodeServer{stream})
+func _BistreamService_MessageChannel_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(BistreamServiceServer).MessageChannel(&bistreamServiceMessageChannelServer{stream})
 }
 
-type BistreamService_RunICodeServer interface {
-	Send(*Response) error
-	Recv() (*Request, error)
+type BistreamService_MessageChannelServer interface {
+	Send(*Message) error
+	Recv() (*Message, error)
 	grpc.ServerStream
 }
 
-type bistreamServiceRunICodeServer struct {
+type bistreamServiceMessageChannelServer struct {
 	grpc.ServerStream
 }
 
-func (x *bistreamServiceRunICodeServer) Send(m *Response) error {
+func (x *bistreamServiceMessageChannelServer) Send(m *Message) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *bistreamServiceRunICodeServer) Recv() (*Request, error) {
-	m := new(Request)
+func (x *bistreamServiceMessageChannelServer) Recv() (*Message, error) {
+	m := new(Message)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -312,8 +888,8 @@ var _BistreamService_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "RunICode",
-			Handler:       _BistreamService_RunICode_Handler,
+			StreamName:    "MessageChannel",
+			Handler:       _BistreamService_MessageChannel_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
@@ -322,24 +898,42 @@ var _BistreamService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("bistream_service.proto", fileDescriptor_bistream_service_806bd77e021c3465)
+	proto.RegisterFile("bistream_service.proto", fileDescriptor_bistream_service_a63e5805404e680a)
 }
 
-var fileDescriptor_bistream_service_806bd77e021c3465 = []byte{
-	// 240 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x90, 0x4f, 0x4b, 0x03, 0x31,
-	0x10, 0xc5, 0xbb, 0x6d, 0x6a, 0xdb, 0x71, 0x41, 0x18, 0x44, 0x42, 0x0f, 0x52, 0x72, 0x2a, 0x08,
-	0x8b, 0xe8, 0x27, 0xf0, 0x4f, 0x05, 0x2f, 0x22, 0xd1, 0xa3, 0x28, 0xbb, 0xed, 0x50, 0x72, 0xd8,
-	0x24, 0xe6, 0x8f, 0xd0, 0x6f, 0x2f, 0x49, 0x16, 0xc4, 0x5b, 0x6f, 0xbf, 0x79, 0x93, 0x97, 0x97,
-	0x17, 0xb8, 0xe8, 0x94, 0x0f, 0x8e, 0xda, 0xfe, 0xcb, 0x93, 0xfb, 0x51, 0x5b, 0x6a, 0xac, 0x33,
-	0xc1, 0xe0, 0xd8, 0x76, 0x42, 0xc1, 0x4c, 0xd2, 0x77, 0x24, 0x1f, 0x10, 0x81, 0xc5, 0xa8, 0x76,
-	0xbc, 0x5a, 0x55, 0xeb, 0x85, 0xcc, 0x9c, 0xb4, 0xf7, 0x83, 0x25, 0x3e, 0x2e, 0x5a, 0x62, 0x14,
-	0x50, 0x3f, 0x45, 0xbd, 0x0d, 0xca, 0xe8, 0x97, 0xb6, 0x27, 0x3e, 0xc9, 0xbb, 0x7f, 0x5a, 0xf2,
-	0xdd, 0xb9, 0xbd, 0xe7, 0x6c, 0x35, 0x49, 0xbe, 0xc4, 0xe2, 0x03, 0xe6, 0x92, 0xbc, 0x35, 0xda,
-	0xd3, 0xd1, 0x59, 0x08, 0xec, 0xb1, 0x0d, 0x6d, 0xce, 0xa8, 0x65, 0x66, 0x3c, 0x87, 0xe9, 0xc6,
-	0x39, 0xe3, 0x38, 0xcb, 0x07, 0xcb, 0x20, 0x66, 0x30, 0xdd, 0xf4, 0x36, 0x1c, 0x6e, 0x3e, 0xe1,
-	0xec, 0x7e, 0xe8, 0xfb, 0x56, 0xea, 0xe2, 0x15, 0xcc, 0x65, 0xd4, 0xcf, 0x0f, 0x66, 0x47, 0x78,
-	0xda, 0xd8, 0xae, 0x19, 0x2a, 0x2f, 0xeb, 0x32, 0x94, 0x47, 0x89, 0xd1, 0xba, 0xba, 0xae, 0xf0,
-	0x12, 0xd8, 0xab, 0xd2, 0x7b, 0x5c, 0xa4, 0x5d, 0xbe, 0x72, 0xf9, 0x87, 0x62, 0xd4, 0x9d, 0xe4,
-	0xcf, 0xbb, 0xfd, 0x0d, 0x00, 0x00, 0xff, 0xff, 0x95, 0x48, 0xa5, 0xc7, 0x56, 0x01, 0x00, 0x00,
+var fileDescriptor_bistream_service_a63e5805404e680a = []byte{
+	// 525 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0x8e, 0x13, 0xa7, 0xc1, 0x93, 0xb4, 0x71, 0x86, 0x0a, 0x45, 0x01, 0xa1, 0x6a, 0x4f, 0x3d,
+	0x45, 0x21, 0x88, 0x23, 0x02, 0x12, 0x82, 0x1a, 0xa1, 0x3a, 0x65, 0x03, 0xea, 0xb1, 0xda, 0xc4,
+	0xab, 0xd4, 0xa2, 0xb1, 0xdd, 0xb5, 0x5d, 0x94, 0xc7, 0xe1, 0x19, 0x10, 0xef, 0x87, 0x76, 0x6d,
+	0xbc, 0x76, 0x9c, 0x03, 0x12, 0xbd, 0x8d, 0xe7, 0xe7, 0x9b, 0x6f, 0xbe, 0x19, 0x2f, 0x3c, 0x5b,
+	0x79, 0x51, 0x2c, 0x38, 0xdb, 0xde, 0x44, 0x5c, 0x3c, 0x78, 0x6b, 0x3e, 0x0c, 0x45, 0x10, 0x07,
+	0x58, 0x0f, 0x57, 0xe4, 0x67, 0x03, 0x5a, 0x97, 0x3c, 0x8a, 0xd8, 0x86, 0xe3, 0x3b, 0xe8, 0x8a,
+	0xc4, 0x9f, 0xaf, 0x03, 0x97, 0x53, 0x7e, 0x9f, 0xf0, 0x28, 0xee, 0x1b, 0x67, 0xc6, 0x79, 0x7b,
+	0xfc, 0x74, 0x18, 0xae, 0x86, 0x34, 0xf1, 0xe7, 0x53, 0x1d, 0xba, 0xa8, 0xd1, 0xfd, 0x6c, 0x9c,
+	0x80, 0xad, 0x5d, 0x51, 0x18, 0xf8, 0x11, 0xef, 0xd7, 0x15, 0xc2, 0x69, 0x19, 0x21, 0x8d, 0x5d,
+	0xd4, 0x68, 0x25, 0x1f, 0xdf, 0x82, 0x2d, 0x38, 0x73, 0x97, 0x31, 0x8b, 0x73, 0x16, 0x0d, 0x85,
+	0xd1, 0x55, 0x18, 0x9c, 0xb9, 0x9a, 0x41, 0x25, 0x15, 0xdf, 0x43, 0xaf, 0xe0, 0xcb, 0x38, 0x98,
+	0xaa, 0xde, 0xd6, 0xf5, 0x79, 0xff, 0x6a, 0xb2, 0x44, 0xf8, 0x21, 0xbc, 0x98, 0x97, 0x18, 0x34,
+	0x35, 0xc2, 0xb5, 0x0c, 0x6a, 0x0a, 0xd5, 0x64, 0x9c, 0x02, 0x16, 0x9d, 0x19, 0x89, 0x23, 0x05,
+	0xd1, 0x2b, 0x40, 0xe4, 0x2c, 0x0e, 0xa4, 0x4f, 0xac, 0x7c, 0x2f, 0xe4, 0x1e, 0xba, 0x7b, 0xe2,
+	0x23, 0x82, 0x99, 0x24, 0x9e, 0xab, 0xf6, 0x63, 0x51, 0x65, 0x4b, 0xdf, 0xd7, 0x5d, 0x98, 0x2a,
+	0x6e, 0x51, 0x65, 0x23, 0x81, 0xce, 0xa7, 0xc4, 0x5f, 0xc7, 0x5e, 0xe0, 0x3b, 0x6c, 0xcb, 0x95,
+	0x92, 0x16, 0x2d, 0xf9, 0x64, 0xdd, 0x07, 0xb1, 0x89, 0xfa, 0xe6, 0x59, 0x43, 0xd6, 0x49, 0x9b,
+	0xb8, 0x60, 0xef, 0x6f, 0xeb, 0x9f, 0x7b, 0x22, 0x98, 0x1f, 0x59, 0xcc, 0x54, 0xaf, 0x0e, 0x55,
+	0x36, 0x9e, 0x42, 0x73, 0x26, 0x44, 0x20, 0xd4, 0x2a, 0x2c, 0x9a, 0x7e, 0x90, 0x2f, 0xd0, 0x2e,
+	0xec, 0xf3, 0x60, 0x83, 0x17, 0x60, 0x79, 0xf2, 0x3e, 0x14, 0xfb, 0xb4, 0x8b, 0x76, 0xa0, 0x0d,
+	0x8d, 0xef, 0x7c, 0x97, 0x4d, 0x25, 0x4d, 0xf2, 0xcb, 0x80, 0x4e, 0x71, 0xc7, 0x07, 0x41, 0xb3,
+	0xb2, 0x7a, 0x5e, 0x26, 0xf9, 0x3d, 0xb0, 0xbb, 0xe4, 0xaf, 0x40, 0xe9, 0x07, 0x8e, 0xa0, 0xc9,
+	0x73, 0xd6, 0x27, 0xe3, 0xc1, 0xfe, 0x01, 0x0d, 0x55, 0x54, 0x0e, 0x4d, 0xd3, 0x44, 0xf2, 0x06,
+	0xac, 0xdc, 0x87, 0x4f, 0xc0, 0x74, 0x16, 0xce, 0xcc, 0xae, 0x61, 0x0f, 0x8e, 0x9d, 0xc5, 0xcd,
+	0xd5, 0x8c, 0x5e, 0xce, 0x97, 0xcb, 0xf9, 0xc2, 0xb1, 0x0d, 0x6c, 0x43, 0xeb, 0x9b, 0xf3, 0xd9,
+	0x59, 0x5c, 0x3b, 0x76, 0x9d, 0xdc, 0x42, 0xa7, 0x78, 0x56, 0x8f, 0xa1, 0x84, 0x1e, 0xc9, 0x2c,
+	0x8c, 0x44, 0x7e, 0x1b, 0x70, 0x5c, 0x3a, 0xbf, 0xff, 0x12, 0xe8, 0x55, 0x59, 0xa0, 0xe7, 0x95,
+	0xe3, 0x7e, 0x34, 0x85, 0x5a, 0xd0, 0x9c, 0x6d, 0xc3, 0x78, 0x37, 0x5e, 0x43, 0x77, 0x92, 0x3d,
+	0x67, 0xcb, 0xf4, 0x35, 0xc3, 0x11, 0x9c, 0x64, 0xbf, 0xca, 0xf4, 0x96, 0xf9, 0x3e, 0xbf, 0xc3,
+	0xb6, 0x24, 0x92, 0xf9, 0x06, 0xc5, 0x0f, 0x52, 0x3b, 0x37, 0x46, 0x06, 0xbe, 0x04, 0xf3, 0xca,
+	0xf3, 0x37, 0x68, 0xc9, 0x90, 0xc2, 0x1d, 0x68, 0x93, 0xd4, 0x56, 0x47, 0xea, 0x81, 0x7c, 0xfd,
+	0x27, 0x00, 0x00, 0xff, 0xff, 0xd8, 0x4b, 0xe1, 0x58, 0x3a, 0x05, 0x00, 0x00,
 }

@@ -37,7 +37,7 @@ func TestServer_RunICode(t *testing.T) {
 	server := sdk.NewServer(5002)
 	wg := sync.WaitGroup{}
 	wg.Add(1)
-	server.SetHandler(func(request *pb.Request) *pb.Response {
+	server.SetIcodeHandler(func(request *pb.Request) *pb.Response {
 		return &pb.Response{
 			Uuid:  request.Uuid,
 			Type:  "test",

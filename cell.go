@@ -17,25 +17,62 @@
 
 package sdk
 
-import "github.com/it-chain/leveldb-wrapper"
+import (
+	"github.com/it-chain/sdk/pb"
+	"github.com/rs/xid"
+)
 
 type Cell struct {
-	DBHandler *leveldbwrapper.DBHandle
+	serverStream *Server
+	icodeName    string
+	requestMap   map[string]chan stateRequestResult
 }
 
-func NewCell(name string) *Cell {
-	path := "./wsdb"
-	dbProvider := leveldbwrapper.CreateNewDBProvider(path)
-	return &Cell{
-		DBHandler: dbProvider.GetDBHandle(name),
+func NewCell(serverStream *Server, icodeName string) (*Cell, func(message *pb.Message)) {
+	cellObj := &Cell{
+		serverStream: serverStream,
+		icodeName:    icodeName,
+		requestMap:   make(map[string]chan stateRequestResult, 0),
 	}
+	return cellObj, cellObj.handleStateResult
 }
 
-func (c Cell) PutData(key string, value []byte) error {
-	return c.DBHandler.Put([]byte(key), value, true)
+func (c Cell) PutData(key string, value string) error {
+	uuid := xid.New().String()
+	mychan := make(chan stateRequestResult, 1)
+	c.requestMap[uuid] = mychan
+	err := c.serverStream.stream.Send(&pb.Message{
+		Message: &pb.Message_WriteStateRequest{
+			WriteStateRequest: &pb.WriteRequest{
+				Uuid:      uuid,
+				IcodeName: c.icodeName,
+				Key:       key,
+				Value:     value,
+			},
+		},
+	})
+	if err != nil {
+		return err
+	}
+	for {
+		select {
+		case result := <-mychan:
+			return result.err
+		default:
+		}
+	}
+
 }
 
 func (c Cell) GetData(key string) ([]byte, error) {
-	value, err := c.DBHandler.Get([]byte(key))
 	return value, err
+}
+
+func (c Cell) handleStateResult(message *pb.Message) {
+
+}
+
+type stateRequestResult struct {
+	value string
+	err   error
 }
