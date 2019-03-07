@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 It-chain
+ * Copyright 2018 DE-labtory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ package main
 import (
 	"os"
 
-	"github.com/it-chain/sdk"
-	"github.com/it-chain/sdk/example/handler"
-	"github.com/it-chain/sdk/logger"
+	"github.com/DE-labtory/sdk"
+	"github.com/DE-labtory/sdk/example/handler"
+	"github.com/DE-labtory/sdk/logger"
 	"github.com/jessevdk/go-flags"
 )
 

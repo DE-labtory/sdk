@@ -9,7 +9,7 @@
 ### 1. Installation Go-SDK
 
 ```bash
-go get -u github.com/it-chain/sdk
+go get -u github.com/DE-labtory/sdk
 ```
 
 
@@ -59,7 +59,7 @@ your icode need to implement this interface.
 
 - <a name="parsePort"></a>Parse -p flag for port in main ( The port is used to create the ibox. )
 
-ICode need port for interact with it-chain engine. [tesseract](https://github.com/it-chain/tesseract) will give port using -p flag.
+ICode need port for interact with it-chain engine. [tesseract](https://github.com/DE-labtory/tesseract) will give port using -p flag.
 
 So your icode need to parse -p flag for port.
 
@@ -119,7 +119,7 @@ if you use any library in your icode, you must make [vendor](https://golang.org/
 
 ## Sample Icode
 
-You can refer sample icode in https://github.com/it-chain/sdk/blob/master/example
+You can refer sample icode in https://github.com/DE-labtory/sdk/blob/master/example
 
 
 
