@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 It-chain
+ * Copyright 2018 DE-labtory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 package sdk
 
-import "github.com/it-chain/leveldb-wrapper"
+import leveldbwrapper "github.com/DE-labtory/leveldb-wrapper"
 
 type Cell struct {
 	DBHandler *leveldbwrapper.DBHandle

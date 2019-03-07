@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 It-chain
+ * Copyright 2018 DE-labtory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,8 @@ import (
 
 	"strconv"
 
-	"github.com/it-chain/sdk"
-	"github.com/it-chain/sdk/pb"
+	"github.com/DE-labtory/sdk"
+	"github.com/DE-labtory/sdk/pb"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 )
